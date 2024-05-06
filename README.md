@@ -6,6 +6,8 @@ This repository contains the `opentermsarchive.deployment` Ansible collection. T
 
 [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) is required to use this collection.
 
+Tested with Ansible `9.4.0`
+
 This collection can be installed from Ansible Galaxy manually with the `ansible-galaxy` command-line tool:
 
 ```sh
@@ -64,7 +66,7 @@ Available [variables](https://docs.ansible.com/ansible/latest/playbook_guide/pla
 
 | Variable | Description | Default value | Required |
 | --- | --- | --- | --- |
-| `ota_engine_github_bot_private_key` | SSH private key contents for GitHub user with privileges on snapshots and versions repositories | No default value | ✔︎ |
+| `ota_github_bot_private_key` | SSH private key contents for GitHub user with privileges on snapshots and versions repositories | No default value | ✔︎ |
 | `ota_engine_github_token` | GitHub token to enable issue creation on the declarations repository and publish releases on versions repository | No default value | ✔︎ |
 | `ota_engine_smtp_password` | Password for the SMTP server used for sending error notifications by email | No default value | - |
 | `ota_engine_sendinblue_api_key` | SendInBlue API key used to send email notifications | No default value | - |
@@ -179,7 +181,7 @@ ansible-vault encrypt_string --name <sensitive-config-name> <sensitive-config-co
 For example, to encrypt the GitHub bot private key used by the engine to push updates:
 
 ```sh
-ansible-vault encrypt_string --name 'ota_engine_github_bot_private_key' '-----BEGIN OPENSSH PRIVATE KEY-----
+ansible-vault encrypt_string --name 'ota_github_bot_private_key' '-----BEGIN OPENSSH PRIVATE KEY-----
 b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABlwAAAAdzc2gtcn
 …
 UlcCkBZ5IkI0eNAAAAE25kcG50QE1CUC1OZHBudC5sYW4BAgMEBQYH
@@ -190,7 +192,7 @@ UlcCkBZ5IkI0eNAAAAE25kcG50QE1CUC1OZHBudC5sYW4BAgMEBQYH
 The encrypted result will look like this:
 
 ```sh
-ota_engine_github_bot_private_key: !vault |
+ota_github_bot_private_key: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           62313438616266383732353634343736623532666365643364396464633732613966636235616261
           3136656665316437613434323561613732373361306161640a306132316531356537373862363838
@@ -209,7 +211,7 @@ all:
       ansible_user: debian
       ota_engine_config_path: ./engine_config.json
       ota_engine_declarations_branch: new-feature
-      ota_engine_github_bot_private_key: !vault |
+      ota_github_bot_private_key: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           62313438616266383732353634343736623532666365643364396464633732613966636235616261
           3136656665316437613434323561613732373361306161640a306132316531356537373862363838
@@ -258,7 +260,7 @@ Then the code can be deployed to the running machine with all the options descri
 
 Testing the Ansible collection locally is crucial to ensure that changes function properly before submitting them as a pull request.
 
-The testing environment is preconfigured for Open Terms Archive maintainers. For other contributors, the configuration file `tests/engine_config.json` needs to be updated to specify repositories where they have authorizations. Additionally, the `ota_engine_github_bot_private_key` value in the inventory file `tests/inventory.yml` should be updated.
+The testing environment is preconfigured for Open Terms Archive maintainers. For other contributors, the configuration file `tests/engine_config.json` needs to be updated to specify repositories where they have authorizations. Additionally, the `ota_github_bot_private_key` value in the inventory file `tests/inventory.yml` should be updated.
 
 Follow these instructions to test the collection in a local environment:
 
